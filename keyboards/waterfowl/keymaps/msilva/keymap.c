@@ -19,6 +19,11 @@
 
 enum custom_keycodes {
     STR1 = SAFE_RANGE,
+    M_EURO,
+    M_RUB,
+    M_POUND,
+    M_PLUSMINUS,
+    M_SECTIONSIGN,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -29,6 +34,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING("somestring");
         } else {
             // when keycode QMKBEST is released
+        }
+        break;
+    case M_EURO:
+        if (record->event.pressed) {
+            register_unicode(0x20AC);
+            return false;
+        }
+        break;
+
+    case M_RUB:
+        if (record->event.pressed) {
+            register_unicode(0x20BD);
+            return false;
+        }
+        break;
+    case M_POUND:
+        if (record->event.pressed) {
+            register_unicode(0x00A3);
+            return false;
+        }
+        break;
+    case M_PLUSMINUS:
+        if (record->event.pressed) {
+            register_unicode(0x00B1);
+            return false;
+        }
+        break;
+    case M_SECTIONSIGN:
+        if (record->event.pressed) {
+            register_unicode(0x00A7);
+            return false;
         }
         break;
     }
@@ -80,7 +116,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_COLEMAK] = LAYOUT(
 	KC_Q,				KC_W,				KC_F,				KC_P,				KC_G,			KC_J,	KC_L,				KC_U,				KC_Y,				KC_SCLN,
-	MT(MOD_LGUI, KC_A),	MT(MOD_LALT, KC_R),	MT(MOD_LSFT, KC_S),	MT(MOD_LCTL, KC_T),	KC_D,			KC_H,	MT(MOD_LCTL, KC_N),	MT(MOD_LSFT, KC_E),	MT(MOD_LALT, KC_I),	MT(MOD_LGUI, KC_O),
+	MT(MOD_LGUI, KC_A),	MT(MOD_LALT, KC_R),	MT(MOD_LSFT, KC_S),	MT(MOD_LCTL, KC_T),	KC_D,			KC_H,	MT(MOD_RCTL, KC_N),	MT(MOD_RSFT, KC_E),	MT(MOD_RALT, KC_I),	MT(MOD_RGUI, KC_O),
 	KC_Z,				KC_X,				KC_C,				KC_V,				KC_B,			KC_K,	KC_M,				KC_COMM,			KC_DOT,				KC_SLSH,
 	KC_1,				LT(3,KC_DEL),		LT(1,KC_SPC),		KC_TAB,				KC_CAPS,		KC_NUM,	KC_ESC,				KC_BSPC,			LT(2,KC_ENT),		KC_4
 ),
@@ -100,7 +136,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_NAVNUM] = LAYOUT(
 	KC_0,		KC_1,		    KC_2,			KC_3,	    KC_MINS,			KC_PGUP,	KC_HOME,KC_UP,		KC_END,			KC_INS,
-	KC_SLSH,	KC_4,		    KC_5,		    KC_6,	    KC_PLUS,			KC_PGDN,	KC_LEFT,KC_DOWN,	KC_RIGHT,		KC_DEL,
+	MT(MOD_LGUI,KC_SLSH),	MT(MOD_LALT,KC_4),		    MT(MOD_LSFT,KC_5),		    MT(MOD_LCTL,KC_6),	    KC_PLUS,			KC_PGDN,	MT(MOD_RCTL,KC_LEFT),MT(MOD_RSFT,KC_DOWN),	MT(MOD_RALT,KC_RIGHT),		MT(MOD_RGUI,KC_DEL),
 	KC_ASTR,	KC_7,			KC_8,			KC_9,		KC_EQL,				KC_NO,		KC_NO,	KC_NO,		KC_NO,			KC_NO,
 	KC_TAB,		LT(3,KC_DEL),	LT(1,KC_SPC),	KC_TAB,		KC_CAPS,			KC_NUM,		KC_ESC,	KC_BSPC,	LT(2,KC_ENT),	KC_4
 ),
@@ -112,7 +148,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------|                      |------+------+------+------+------|
  * |   \  |   §  |   ±  |   £  |   `  |                      |   '  |   -  |   =  |   [  |   ]  |
  * |------+------+------+------+------|  ,-----.    ,-----.  |------+------+------+------+------|
- * |   |  |      |      |   €  |      |  |CAPS |    |NUMLK|  |   ~  |   _  |   +  |   {  |   }  |
+ * |   |  |   ₽  |      |   €  |   "  |  |CAPS |    |NUMLK|  |   ~  |   _  |   +  |   {  |   }  |
  * `----------------------------------'  `-----'    `-----'  `----------------------------------'
  *          ,-----.   ,--------------------.            ,--------------------.   ,-----.
  *          |  1  |   | DEL | SPACE | TAB  |            |  ESC  | BS | ENTER |   |  4  |
@@ -120,8 +156,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_SYM] = LAYOUT(
 	KC_EXLM,	KC_AT,			KC_HASH,		KC_DLR, 	KC_PERC,		KC_CIRC,	KC_AMPR,	KC_ASTR,	KC_LPRN,		KC_RPRN,
-	KC_BSLS,	UC(0x00A7),		UC(0x00B1),		UC(0x00A3),	KC_GRV, 		KC_QUOT,	KC_MINS,	KC_EQL,		KC_LBRC,		KC_RBRC,
-	KC_PIPE,	KC_NO,			KC_NO,		    UC(0x20AC),	KC_AMPR,		KC_TILD,	KC_UNDS,	KC_PLUS,	KC_LCBR,		KC_RCBR,
+	MT(MOD_LGUI,KC_BSLS),	MT(MOD_LALT,M_SECTIONSIGN),	MT(MOD_LSFT,M_PLUSMINUS),	MT(MOD_LCTL,M_POUND),	KC_GRV, 		KC_QUOT,	MT(MOD_RCTL, KC_MINS),	MT(MOD_RSFT, KC_EQL),		MT(MOD_RALT,KC_LBRC),		MT(MOD_RGUI,KC_RBRC),
+	KC_PIPE,	M_RUB,			KC_NO,		    M_EURO,	    KC_DQT,		    KC_TILD,	KC_UNDS,	KC_PLUS,	KC_LCBR,		KC_RCBR,
 	KC_1,		LT(3,KC_DEL),	LT(1,KC_SPC),	KC_TAB,		KC_CAPS,		KC_NUM,		KC_ESC,		KC_BSPC,	LT(2,KC_ENT),	KC_4
 ),
 
