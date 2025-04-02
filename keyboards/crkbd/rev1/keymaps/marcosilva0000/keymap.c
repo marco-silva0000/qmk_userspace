@@ -19,6 +19,11 @@
 
 enum custom_keycodes {
     STR1 = SAFE_RANGE,
+    M_EURO,
+    M_RUB,
+    M_POUND,
+    M_PLUSMINUS,
+    M_SECTIONSIGN,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -31,9 +36,41 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // when keycode QMKBEST is released
         }
         break;
+    case M_EURO:
+        if (record->event.pressed) {
+            register_unicode(0x20AC);
+            return false;
+        }
+        break;
+
+    case M_RUB:
+        if (record->event.pressed) {
+            register_unicode(0x20BD);
+            return false;
+        }
+        break;
+    case M_POUND:
+        if (record->event.pressed) {
+            register_unicode(0x00A3);
+            return false;
+        }
+        break;
+    case M_PLUSMINUS:
+        if (record->event.pressed) {
+            register_unicode(0x00B1);
+            return false;
+        }
+        break;
+    case M_SECTIONSIGN:
+        if (record->event.pressed) {
+            register_unicode(0x00A7);
+            return false;
+        }
+        break;
     }
     return true;
 };
+
 
 // Defines names for use in layer keycodes and the keymap
 enum layer_names {
@@ -120,8 +157,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_SYM] = LAYOUT(
 	KC_TAB,			KC_EXLM,	KC_AT,			KC_HASH,		KC_DLR, 	KC_PERC,		KC_CIRC,	KC_AMPR,	KC_ASTR,	KC_LPRN,		KC_RPRN, 	KC_BSPC,
-	KC_BSPC,		KC_BSLS,	UC(0x00A7),		UC(0x00B1),		UC(0x00A3),	KC_GRV, 		KC_QUOT,	KC_MINS,	KC_EQL,		KC_LBRC,		KC_RBRC,	KC_QUOT,
-	MOD_LSFT,		KC_PIPE,	KC_NO,			KC_NO,		    UC(0x20AC),	KC_AMPR,		KC_TILD,	KC_UNDS,	KC_PLUS,	KC_LCBR,		KC_RCBR, 	KC_ESC,
+	KC_BSPC,		MT(MOD_LGUI,KC_BSLS),	MT(MOD_LALT,M_SECTIONSIGN),	MT(MOD_LSFT,M_PLUSMINUS),	MT(MOD_LCTL,M_POUND),	KC_GRV, 		KC_QUOT,	MT(MOD_RCTL, KC_MINS),	MT(MOD_RSFT, KC_EQL),		MT(MOD_RALT,KC_LBRC),		MT(MOD_RGUI,KC_RBRC),	KC_QUOT,
+	MOD_LSFT,		KC_PIPE,	M_RUB,			KC_NO,		    M_EURO,	KC_DQT,		KC_TILD,	KC_UNDS,	KC_PLUS,	KC_LCBR,		KC_RCBR, 	KC_ESC,
 	LT(3,KC_DEL),	LT(1,KC_SPC),	KC_TAB,		KC_ESC,		KC_BSPC,	LT(2,KC_ENT)
 ),
 
